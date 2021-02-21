@@ -15,7 +15,7 @@ http {
     }
 
     server {
-        listen ${SSL_PORT} ssl;
+        listen ${SSL_PORT} ssl http2;
 
         client_max_body_size ${CLIENT_MAX_BODY_SIZE};
         ssl_certificate     /etc/nginx/certs/cert.pem;
