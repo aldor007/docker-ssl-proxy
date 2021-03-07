@@ -1,13 +1,12 @@
 #!/bin/sh -e
 
-DOMAIN=${DOMAIN:-www.example.com}
-OUTPUT_DIR=/etc/nginx/certs
+DOMAIN=${DOMAIN:-loki.monitorng.svc}
+OUTPUT_DIR=.
 
 mkdir -p $OUTPUT_DIR
 
 REPLACEABLE='$DOMAIN'
 
-envsubst $REPLACEABLE < /openssl.cnf.template > /openssl.cnf
 
 if [ ! -f ${OUTPUT_DIR}/key.pem ]; then
   echo "SSL Certificate not found. Generating self-signed certficiate..."
@@ -18,7 +17,7 @@ if [ ! -f ${OUTPUT_DIR}/key.pem ]; then
       -keyout ${OUTPUT_DIR}/key.pem \
       -out ${OUTPUT_DIR}/cert.pem \
       -days 825 \
-      -config /openssl.cnf \
+      -config openssl.cnf \
       -extensions v3_req \
-      -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=${DOMAIN}"
+      -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=monitoring-loki"
 fi

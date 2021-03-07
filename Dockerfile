@@ -1,14 +1,11 @@
-FROM alpine:3.13.2
+# FROM alpine:3.13.2
+FROM nginx:1.19
 
-ENV SSL_PORT=443
 
-RUN apk add --no-cache nginx openssl gettext
+RUN mkdir -p /etc/nginx/certs
+ADD cert.pem /etc/nginx/certs
+ADD key.pem /etc/nginx/certs
+ADD nginx.conf  /etc/nginx/nginx.conf
+RUN chmod 777 -R /etc/nginx/certs && chmod 777 -R /var && chmod 777 -R /run
 
-ADD add_self_signed_certs.sh /
-ADD openssl.cnf.template /
-ADD nginx.conf.template /
-ADD configure_nginx.sh /
-
-EXPOSE ${SSL_PORT}
-
-ENTRYPOINT ["/configure_nginx.sh"]
+EXPOSE 8443
